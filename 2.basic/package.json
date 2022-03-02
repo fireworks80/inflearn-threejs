@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "start": "webpack serve --open"
+    "start": "webpack serve --open --progress"
   },
   "keywords": [],
   "author": "",

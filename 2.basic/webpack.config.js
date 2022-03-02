@@ -13,6 +13,9 @@ const config = {
     host: 'localhost',
     hot: true,
   },
+  devServer: {
+    static: './dist',
+  },
   module: {
     rules: [
       {
