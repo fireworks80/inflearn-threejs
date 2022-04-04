@@ -1,1 +1,1 @@
-[preview](https://fireworks80.github.io/inflearn-threejs/08light/light/dist/)
+[preview](https://fireworks80.github.io/inflearn-threejs/08Light/light/dist/)
