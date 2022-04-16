@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import * as CANNON from 'cannon-es';
 import PreventDrag from '../../../09raycaster/raycaster/src/preventDrag';
-import Sphere from './Sphere';
+import RandomSphere from './RandomSphere';
 
 // ----- 주제: cannon.js 기본 세팅
 
@@ -87,6 +87,13 @@ export default function example() {
 
   scene.add(floorMesh);
 
+  const sphereGeometry = new THREE.SphereGeometry(0.5);
+  const sphereMaterial = new THREE.MeshStandardMaterial({
+    color: 'seagreen',
+  });
+
+  const spheres = [];
+
   // 그리기
   const clock = new THREE.Clock();
 
@@ -97,6 +104,11 @@ export default function example() {
     let cannonStepTime = delta < 0.01 ? 1 / 120 : 1 / 60;
 
     cannonWorld.step(cannonStepTime, delta, 3);
+
+    spheres.forEach((sphere) => {
+      sphere.mesh.position.copy(sphere.cannonBody.position);
+      sphere.mesh.quaternion.copy(sphere.cannonBody.quaternion);
+    });
 
     renderer.render(scene, camera);
     renderer.setAnimationLoop(draw);
@@ -115,12 +127,19 @@ export default function example() {
   window.addEventListener('resize', setSize);
   canvas.addEventListener('click', () => {
     if (preventDrag.isMoved) return;
-    new Sphere({
-      scene,
-      x: (Math.random() - 0.5) * 2,
-      y: Math.random() * 5 + 2,
-      z: (Math.random() - 0.5) * 2,
-    });
+
+    spheres.push(
+      new RandomSphere({
+        scene,
+        world: cannonWorld,
+        x: (Math.random() - 0.5) * 2,
+        y: Math.random() * 5 + 2,
+        z: (Math.random() - 0.5) * 2,
+        scale: Math.random() + 0.2,
+        geometry: sphereGeometry,
+        material: sphereMaterial,
+      })
+    );
   });
   draw();
 }
